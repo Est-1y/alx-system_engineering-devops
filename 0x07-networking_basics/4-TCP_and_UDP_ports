@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# Script displays listening ports: it only shows listening sockets.
+# It also shows the PID and name of the program to which each of the socket belongs.
+# script may not contain the sudo command. It just helps as an added layer of security
+
+sudo netstat -lp
