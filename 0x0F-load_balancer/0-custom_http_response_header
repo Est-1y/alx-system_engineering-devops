@@ -1,22 +1,33 @@
 #!/usr/bin/env bash
-# 0-custom_http_response_header configuring brrad
-# new ubuntu machine
+# Installing Nginx
 
-# Updating package info
-sudo apt-get -y update
+# package update
+apt-get update
+apt-get install -y nginx
 
-# Nginx installation
-sudo apt-get -y install nginx
+mkdir -p /var/www/html
+touch /var/www/html/index.html
+echo "Hello World" > /var/www/html/index.html
+touch /var/www/html/404.html
+echo "Ceci n'est pas une page" > /var/www/html/404.html
 
-# HTML files
-echo "Hello World!" | sudo tee /var/www/html/index.html
-echo "Ceci n'est pas une page" | sudo tee /var/www/html/404.html
+printf %s "server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
+    add_header X-Served-By $HOSTNAME;
+    root   /var/www/html;
+    index  index.html index.htm;
 
-# Nginx configuration
-new_config="add_header X-Served-By \$hostname;\n\tlocation /redirect_me {\n\t\treturn 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;\n\t}\n\n\terror_page 404 /custom_404.html;\n\tlocation = /custom_404.html {\n\t\tinternal;\n\t}\n"
+    location /redirect_me {
+        return 301 http://cuberule.com/;
+    }
 
-# Updating Nginx configuration
-sudo sed -i "/server_name _;/c\\$new_config" /etc/nginx/sites-enabled/default
+    error_page 404 /404.html;
+    location /404 {
+      root /var/www/html;
+      internal;
+    }
+}" > /etc/nginx/sites-available/default
 
-# Restart Nginx
-sudo service nginx restart
+# Restarting nginx
+service nginx restart
