@@ -1,22 +1,24 @@
 #!/usr/bin/env bash
-# Installing Nginx
+# Installing Nginx.
 
-# package update
+# Update upgrade packages
 apt-get update
+apt-get upgrade -y
 apt-get install -y nginx
 
+# Creating directories and files,.
 mkdir -p /var/www/html
-touch /var/www/html/index.html
 echo "Hello World" > /var/www/html/index.html
-touch /var/www/html/404.html
 echo "Ceci n'est pas une page" > /var/www/html/404.html
 
-printf %s "server {
+# Configure Nginx.
+cat << EOF > /etc/nginx/sites-available/default
+server {
     listen 80 default_server;
     listen [::]:80 default_server;
-    add_header X-Served-By $HOSTNAME;
-    root   /var/www/html;
-    index  index.html index.htm;
+    add_header X-Served-By \$HOSTNAME;
+    root /var/www/html;
+    index index.html index.htm;
 
     location /redirect_me {
         return 301 http://cuberule.com/;
@@ -24,10 +26,11 @@ printf %s "server {
 
     error_page 404 /404.html;
     location /404 {
-      root /var/www/html;
       internal;
     }
-}" > /etc/nginx/sites-available/default
+}
+EOF
 
-# Restarting nginx
+# Restarting
 service nginx restart
+
