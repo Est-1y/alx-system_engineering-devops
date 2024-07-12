@@ -1,22 +1,36 @@
 #!/usr/bin/env bash
-# domain information
+# script displaying information about domains
 
-# displaying info
-display_info () {
-    result=$(dig +short "$1")
-    if [ -z "$result" ]; then
-        echo "No record found for $1"
-    else
-        echo "The subdomain $2 points to $result"
-    fi
+# Function
+get_subdomain_info() {
+    local domain="$1"
+    local subdomain="$2"
+
+    # Query DNS records.
+    local dns_info
+    dns_info=$(dig "$subdomain.$domain" | awk '/ANSWER SECTION/ {getline; print}')
+
+    # Parse the DNS info
+    local record_type
+    record_type=$(echo "$dns_info" | awk '{print $4}')
+    local destination
+    destination=$(echo "$dns_info" | awk '{print $5}')
+
+    # information output
+    echo "The subdomain $subdomain is a $record_type record and points to $destination"
 }
 
-# provisions check
-if [ "$#" -eq 2 ]; then
-    display_info "$2.$1" "$2"
+# script
+domain="$1"
+subdomain="$2"
+
+# displaying information
+if [ -z "$subdomain" ]; then
+    get_subdomain_info "$domain" "www"
+    get_subdomain_info "$domain" "lb-01"
+    get_subdomain_info "$domain" "web-01"
+    get_subdomain_info "$domain" "web-02"
 else
-    display_info "www.$1" "www"
-    display_info "lb-01.$1" "lb-01"
-    display_info "web-01.$1" "web-01"
-    display_info "web-02.$1" "web-02"
+    # Display info.
+    get_subdomain_info "$domain" "$subdomain"
 fi
