@@ -1,14 +1,17 @@
 #!/usr/bin/env bash
-# displaying domain info
+# domain information
 
-# displayin info
+# displaying info
 display_info () {
-    result=$(dig "$1" | grep -A1 'ANSWER SECTION:' | tail -n1)
-    record_type=$(echo "$result" | awk '{print $4}')
-    destination=$(echo "$result" | awk '{print $5}')
-    echo "The subdomain $2 is a $record_type record and points to $destination"
+    result=$(dig +short "$1")
+    if [ -z "$result" ]; then
+        echo "No record found for $1"
+    else
+        echo "The subdomain $2 points to $result"
+    fi
 }
-# ..
+
+# provisions check
 if [ "$#" -eq 2 ]; then
     display_info "$2.$1" "$2"
 else
