@@ -1,30 +1,22 @@
 #!/usr/bin/env bash
-# script displaying information about domain.
+# script displaying information about domains.
 
-# displaying information.
+# display information
 get_subdomain_info() {
     local domain="$1"
     local subdomain="$2"
 
-    # Query DNS records.
+    # Query DNS record.
     local dns_info
-    dns_info=$(dig +short "$subdomain.$domain" ANY)
+    dns_info=$(dig "$subdomain.$domain" | awk '/ANSWER SECTION/ {getline; print}')
 
-    # Check for DNS
-    if [ -z "$dns_info" ]; then
-        echo "No DNS records found for $subdomain.$domain"
-        return
-    fi
-
-    # Parsing DNS info
+    # Parse the DNS info
     local record_type
+    record_type=$(echo "$dns_info" | awk '{print $4}')
     local destination
+    destination=$(echo "$dns_info" | awk '{print $5}')
 
-    # handling record types
-    record_type=$(echo "$dns_info" | awk '{print $1}')
-    destination=$(echo "$dns_info" | awk '{print $2}')
-
-    # Printing information.
+    # Print the info
     echo "The subdomain $subdomain is a $record_type record and points to $destination"
 }
 
@@ -32,19 +24,13 @@ get_subdomain_info() {
 domain="$1"
 subdomain="$2"
 
-# Check for domain provision.
-if [ -z "$domain" ]; then
-    echo "Domain is required"
-    exit 1
-fi
-
-# display info for default subdomain.
+# display information
 if [ -z "$subdomain" ]; then
     get_subdomain_info "$domain" "www"
     get_subdomain_info "$domain" "lb-01"
     get_subdomain_info "$domain" "web-01"
     get_subdomain_info "$domain" "web-02"
 else
-    # Display info.
+    # Display info
     get_subdomain_info "$domain" "$subdomain"
 fi
