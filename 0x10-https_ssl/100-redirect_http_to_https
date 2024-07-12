@@ -34,11 +34,11 @@ defaults
     errorfile 503 /etc/haproxy/errors/503.http
     errorfile 504 /etc/haproxy/errors/504.http
 
-backend http_servers
+backend web-backend
     balance roundrobin
     server 436843-web-01 100.25.152.161:80 check
     server 436843-web-02 54.88.22.237:80 check
-
+#frontend
 frontend http
     bind *:80
     mode http
