@@ -1,36 +1,16 @@
 #!/usr/bin/env bash
-# script displaying information about domains.
+# displaying domain info
 
-# display information
-get_subdomain_info() {
-    local domain="$1"
-    local subdomain="$2"
-
-    # Query DNS record.
-    local dns_info
-    dns_info=$(dig "$subdomain.$domain" | awk '/ANSWER SECTION/ {getline; print}')
-
-    # Parse the DNS info
-    local record_type
-    record_type=$(echo "$dns_info" | awk '{print $4}')
-    local destination
-    destination=$(echo "$dns_info" | awk '{print $5}')
-
-    # Print the info
-    echo "The subdomain $subdomain is a $record_type record and points to $destination"
+print_info () {
+    dig "$1" | grep -A1 'ANSWER SECTION:' | sed -r "s/$1./$2/g" | awk -F" " ' NR==2 { print "The subdomain " $1 " is a " $4 " record and points to " $5 }'
 }
 
-# script
-domain="$1"
-subdomain="$2"
-
-# display information
-if [ -z "$subdomain" ]; then
-    get_subdomain_info "$domain" "www"
-    get_subdomain_info "$domain" "lb-01"
-    get_subdomain_info "$domain" "web-01"
-    get_subdomain_info "$domain" "web-02"
+if [ "$#" -eq 2 ]
+then
+    print_info "$2.$1" "$2"
 else
-    # Display info
-    get_subdomain_info "$domain" "$subdomain"
+    print_info "www.$1" "www"
+    print_info "lb-01.$1" "lb-01"
+    print_info "web-01.$1" "web-01"
+    print_info "web-02.$1" "web-02"
 fi
