@@ -1,16 +1,36 @@
 #!/usr/bin/env bash
-# printing domain.
+# script displaying info about domains.
 
-print_domain_subdomain () {
-    dig "$1" | grep -A1 'ANSWER SECTION:' | sed -r "s/$1./$2/g" | awk -F" " ' NR==2 { print "The subdomain " $1 " is a " $4 " record and points to " $5 }'
+# displaying info
+get_subdomain_info() {
+    local domain="$1"
+    local subdomain="$2"
+
+    # query records
+    local dns_info
+    dns_info=$(dig "$subdomain.$domain" | awk '/ANSWER SECTION/ {getline; print}')
+
+    # Parsing DNS info.
+    local record_type
+    record_type=$(echo "$dns_info" | awk '{print $4}')
+    local destination
+    destination=$(echo "$dns_info" | awk '{print $5}')
+
+    # info printing
+    echo "The subdomain $subdomain is a $record_type record and points to $destination"
 }
 
-if [ "$#" -eq 2 ]
-then
-    print_domain_subdomain "$2.$1" "$2"
+# script
+domain="$1"
+subdomain="$2"
+
+# displaying information for default subdomains.
+if [ -z "$subdomain" ]; then
+    get_subdomain_info "$domain" "www"
+    get_subdomain_info "$domain" "lb-01"
+    get_subdomain_info "$domain" "web-01"
+    get_subdomain_info "$domain" "web-02"
 else
-    print_domain_subdomain "www.$1" "www"
-    print_domain_subdomain "lb-01.$1" "lb-01"
-    print_domain_subdomain "web-01.$1" "web-01"
-    print_domain_subdomain "web-02.$1" "web-02"
+    # Display subdomain information.
+    get_subdomain_info "$domain" "$subdomain"
 fi
