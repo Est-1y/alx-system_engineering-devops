@@ -1,18 +1,7 @@
 #!/usr/bin/env bash
-# configuring container for running as nginx user
-
-# variable use for pathe
-NGINX_CONF="/etc/nginx/nginx.conf"
-DEFAULT_SITE="/etc/nginx/sites-available/default"
-
-# Updating Nginx
-sed -i 's/#user www-data/user nginx;/' "$NGINX_CONF"
-
-# Updating default site config
-sed -i "s/80/8080/g" "$DEFAULT_SITE"
-
+# configuring container to run nginx
+sed -i "s/#user www-data/user nginx/" /etc/nginx/nginx.conf
+sed -i "s/80/8080/g" /etc/nginx/sites-available/default
 chmod 644 /etc/nginx/nginx.conf
 pkill apache2
-
-# Nginx restart.
 sudo -u nginx service nginx start
