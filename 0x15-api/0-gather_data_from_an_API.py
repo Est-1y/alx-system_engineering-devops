@@ -7,7 +7,7 @@ import sys
 
 
 def get_employee_todo_progress(employee_id):
-    """Using REST API for a given employee ID"""
+    """JSON API for a given employee ID"""
     base_url = "https://jsonplaceholder.typicode.com"
     user_url = "{}/users/{}".format(base_url, employee_id)
     todos_url = "{}/todos?userId={}".format(base_url, employee_id)
