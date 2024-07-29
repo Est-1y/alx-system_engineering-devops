@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""Retrieving and displaying TODO list progress for a given employee."""
+""" displaying TODO list progress"""
 
 import requests
 import sys
@@ -45,4 +45,3 @@ if __name__ == "__main__":
 
     # Get TODO list progress
     get_employee_todo_progress(employee_id)
-
