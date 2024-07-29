@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-""" displaying TODO list progress"""
+"""display TODO list progress"""
 
 import requests
 import sys
