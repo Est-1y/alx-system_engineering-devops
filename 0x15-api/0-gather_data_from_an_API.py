@@ -8,7 +8,7 @@ import sys
 
 
 def get_employee_todo_progress(employee_id):
-    """ using REST API for a given employee ID returns information about TODO list progress
+    """ using REST API for a given employee ID
     """
     base_url = "https://jsonplaceholder.typicode.com"
     user_url = "{}/users/{}".format(base_url, employee_id)
