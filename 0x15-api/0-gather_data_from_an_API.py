@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+
 """ displaying TODO list progress"""
 
 import requests
