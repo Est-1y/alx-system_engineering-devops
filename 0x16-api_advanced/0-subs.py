@@ -1,18 +1,21 @@
 #!/usr/bin/python3
-"""
-number of subscribers for a reddit
-"""
-from requests import get
+"""Querying subscribers on Reddit subreddit."""
+import requests
 
 
 def number_of_subscribers(subreddit):
-    """ querying subscriber count"""
-    if subreddit and type(subreddit) is str:
-        subscribers = 0
-        url = 'https://reddit.com/r/{}/about.json'.format(subreddit)
-        headers = {'user-agent': 'my-app/0.0.1'}
-        request = get(url, headers=headers)
-        if request.status_code == 200:
-            data = request.json()
-            subscribers = data.get('data', {}).get('subscribers', 0)
+    """number of subscribers"""
+    url = "https://www.reddit.com/r/{}/about.json".format(subreddit)
+
+    headers = {'User-Agent': 'RedditDataAnalyzer/1.0 (ALX Africa)'}
+
+    response = requests.get(url, headers=headers, allow_redirects=False)
+
+    if response.status_code == 200:
+        data = response.json()
+
+        subscribers = data.get('data', {}).get('subscribers', 0)
+
         return subscribers
+    else:
+        return 0
