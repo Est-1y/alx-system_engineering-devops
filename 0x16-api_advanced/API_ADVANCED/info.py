@@ -3,17 +3,15 @@
 import requests
 
 
-CLIENT_ID = "5BXUX6gOYQJ8GzmvXZ6uUw"
-SECRET_KEY = "Ic6OkjkdCEJ52Wp4DQuxUluKczP2Bg"
+CLIENT_ID = "Z_Xe3TwuaNQaZ4JX-PFPKA"
+SECRET_KEY = "nDQ3xPD19zaAcepZwPYhRNniZYYPdQ"
 
-# request a temporary auth token from reddit
+# request for an authorization token from reddit
 auth = requests.auth.HTTPBasicAuth(CLIENT_ID, SECRET_KEY)
 
-# Log in
-# Initialize a dictionary that specifies that we are going to be login in via a password
-
+# Initializing a dictionary
 data = {
         'grant_type': 'password',
-        'username': 'alicia makena',
-        'password': '1010ilovelucibel'
+        'username': 'Aceybon',
+        'password': 'Barbelieber'
         }
