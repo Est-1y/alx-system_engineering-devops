@@ -1,24 +1,32 @@
 #!/usr/bin/python3
-"""Titles of the 10 hottest posts on Reddit"""
 
-import requests
+"""
+Titles of the first 10 hot posts listed.
+"""
+
+from requests import get
 
 
 def top_ten(subreddit):
     """
-    Queries.
+    querying reddit api.
     """
 
-    url = f"https://www.reddit.com/r/{subreddit}/hot/.json"
-    headers = {"User-Agent": "linux:0x16.api.advanced"}
-    params = {"limit": 10}
-    response = requests.get(
-        url=url, headers=headers, params=params, allow_redirects=False
-    )
-
-    if response.status_code == 404:
+    if subreddit is None or not isinstance(subreddit, str):
         print("None")
-        return
 
-    results = response.json().get("data")
-    [print(t.get("data").get("title")) for t in results.get("children")]
+    user_agent = {'User-agent': 'Google Chrome Version 81.0.4044.129'}
+    params = {'limit': 10}
+    url = 'https://www.reddit.com/r/{}/hot/.json'.format(subreddit)
+
+    response = get(url, headers=user_agent, params=params)
+    results = response.json()
+
+    try:
+        my_data = results.get('data').get('children')
+
+        for index in my_data:
+            print(index.get('data').get('title'))
+
+    except Exception:
+        print("None")
