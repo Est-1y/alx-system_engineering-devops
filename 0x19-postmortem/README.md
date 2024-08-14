@@ -52,7 +52,4 @@
 Through these implementions, we aim to enhance the reliability and resilience of our application under heavy load, ensuring a smoother user experience.
 
 
-
-
-
-
+- https://medium.com/@terryiana22/postmortem-db-connection-pool-exhaustion-incident-7d8ec3e4001b
