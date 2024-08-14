@@ -1,18 +1,21 @@
 #!/usr/bin/python3
-"""
-number_of_subscribers function for a given
-subreddit
-"""
-
+"""Querying subscribers on a Reddit subreddit."""
 import requests
 
 
 def number_of_subscribers(subreddit):
-    """querying Reddit API"""
-    if subreddit is None or type(subreddit) is not str:
-        return 0
-    r = requests.get('http://www.reddit.com/r/{}/about.json'.format(subreddit),
-                     headers={'User-Agent': '0x16-api_advanced:project:\
-v1.0.0 (by /u/firdaus_cartoon_jr)'}).json()
-    subs = r.get("data", {}).get("subscribers", 0)
-    return subs
+    """number of subscribers"""
+    try:
+        url = "https://www.reddit.com/r/{}/about.json".format(subreddit)
+        headers = {
+            "User-Agent": "linux:0x16.api.advanced:v1.0.0\
+            (by /u/Large_Alternative_30)"
+        }
+        response = requests.get(url, headers=headers, allow_redirects=False)
+        if response.status_code == 404:
+            return 0
+        results = response.json().get("data")
+        return results.get("subscribers")
+    except (Exception):
+        print('Not Found')
+        return (0)

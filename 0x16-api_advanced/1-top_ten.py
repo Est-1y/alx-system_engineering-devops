@@ -1,24 +1,23 @@
 #!/usr/bin/python3
-"""Titles of the 10 hottest posts on Reddit"""
-
+""" Querying Reddit API and printing titles"""
 import requests
 
 
 def top_ten(subreddit):
-    """
-    Queries.
-    """
+    """Titles of 10 hottest posts"""
+    url = "https://www.reddit.com/r/{}/hot.json".format(subreddit)
 
-    url = f"https://www.reddit.com/r/{subreddit}/hot/.json"
-    headers = {"User-Agent": "linux:0x16.api.advanced"}
-    params = {"limit": 10}
-    response = requests.get(
-        url=url, headers=headers, params=params, allow_redirects=False
-    )
+    headers = {'User-Agent': 'RedditDataAnalyzer/1.0 (ALX Africa)'}
+    params = {'limit': 10}
 
-    if response.status_code == 404:
-        print("None")
-        return
+    response = requests.get(url, headers=headers, params=params,
+                            allow_redirects=False)
 
-    results = response.json().get("data")
-    [print(t.get("data").get("title")) for t in results.get("children")]
+    if response.status_code == 200:
+        data = response.json()
+
+        for post in data.get('data').get('children'):
+            title = post.get('data').get('title')
+            print(title)
+    else:
+        print(None)
