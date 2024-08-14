@@ -24,8 +24,9 @@
 
 **Improvements and Fixes:**
 
-  *Optimize Connection Pool Configuration: Review and optimize the connection pool settings based on expected traffic patterns to prevent future exhaustion.
-  *Enhanced Load Testing: Implement more rigorous load testing scenarios that simulate peak traffic to identify potential bottlenecks in the connection pool before they reach production.
+  * Optimize Connection Pool Configuration: Review and optimize the connection pool settings based on expected traffic patterns to prevent future exhaustion.
+  
+  * Enhanced Load Testing: Implement more rigorous load testing scenarios that simulate peak traffic to identify potential bottlenecks in the connection pool before they reach production.
 **Automated Alerts:** Set up automated alerts specifically for connection pool usage to catch similar issues before they escalate.
 **TODO List:**
 
