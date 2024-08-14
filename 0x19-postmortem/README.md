@@ -1,9 +1,13 @@
 **Postmortem:** DB Connection Pool Exhaustion Incident.
+
 **Issue summary**
 
 **Duration:** August 9, 2024, 11:00 - 12:20 UTC (1 hour 20 minutes)
+
 **Impact:** The primary service affected was the application’s API layer, resulting in 60% of users experiencing slow response times or timeouts when accessing the application. This led to degraded performance and a significant drop in user engagement during the outage.
+
 **Root Cause:** The incident was caused by an unoptimized database connection pooling configuration, which led to the exhaustion of available connections under increased load.
+
 **Timeline:**
 
 **11:00 UTC:** The issue was detected by monitoring tools, which reported a sharp increase in response times and a spike in timeout errors.
