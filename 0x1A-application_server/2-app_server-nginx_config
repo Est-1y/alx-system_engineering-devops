@@ -1,0 +1,37 @@
+# Configuration
+server {
+        listen 80 default_server;
+        listen [::]:80 default_server;
+
+        add_header X-Served-By $hostname;
+
+
+        # SSL configuration
+
+        root /var/www/html;
+
+        # Adding index.php
+        index index.html index.htm index.nginx-debian.html;
+error_page 404 /custom_404.html;
+
+        server_name _;
+
+        location / {
+
+                try_files $uri $uri/ =404;
+        }
+
+        # Location block.
+        location /airbnb-onepage/ {
+                # requests
+                proxy_pass http://localhost:5000;
+
+                # headers
+                proxy_set_header Host $host;
+
+                # HTTP version.
+                proxy_http_version 1.1;
+        }
+
+
+}
